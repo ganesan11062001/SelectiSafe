@@ -1,0 +1,9 @@
+---
+name: SIF Agents Pipeline
+category: Specialized Apps
+role: batch_connect
+description: |
+  Streamlit dashboard for the sif-agents multi-agent drug-discovery pipeline
+  (FlowR, DiffDock, GNINA, AiZynthFinder, ADMET-AI). Launch and monitor runs,
+  then ask a local Ollama model (shared Auxilium runtime) to summarize a
+  run's final_report.json.

@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+# Export the module function if it exists
+[[ $(type -t module) == "function" ]] && export -f module
+
+# Find available port to run the Streamlit server on (OOD "basic" template helper)
+port=$(find_port ${host})

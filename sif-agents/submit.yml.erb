@@ -1,0 +1,24 @@
+---
+<%-
+  duration = time.to_i
+  mem = memory.to_i
+  cpus = ncpus.to_i
+-%>
+---
+batch_connect:
+  template: "basic"
+
+set_host: "host=$(hostname).explorer.neu.edu"
+
+script:
+  native:
+    - "--job-name=sif-agents-streamlit"
+    - "--partition=sharing"
+    - "--gres=gpu:1"
+    # sharing has AMD mi50 nodes; the ollama build under
+    # /projects/rc/projects/Auxilium (shared with auxilium-analyze) is CUDA-only.
+    - "--exclude=d3163,d3164"
+    - "--nodes=1"
+    - "--cpus-per-task=<%= cpus %>"
+    - "--mem=<%= mem %>GB"
+    - "--time=<%= duration %>:00:00"

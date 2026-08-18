@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+.venv/
+runs/
+.aizynthfinder_numpy_fix/
+*.sif
+*.ckpt

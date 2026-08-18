@@ -1,0 +1,48 @@
+#!/bin/bash
+# ============================================================
+#  sif-agents Streamlit dashboard - Batch Connect job body
+#  Launches the Streamlit UI (../streamlit.py) bound to the port
+#  OOD picked in before.sh.erb. Ollama itself is started lazily, on
+#  first "Analyze with Ollama" click, by llm/ollama_client.py --
+#  not here -- so a session that never asks for analysis never pays
+#  Ollama's cold-start cost or holds the GPU idle for it.
+# ============================================================
+set -uo pipefail
+
+#-----------------------------------------------------------
+# Setting Work Directory and Module Environment
+#-----------------------------------------------------------
+PROJECT_DIR="/scratch/g.murugan/Pfizer/sif-agents"
+cd "$PROJECT_DIR"
+
+module purge
+module load python/3.13.5
+module list
+
+#-----------------------------------------------------------
+# One-time venv setup (subsequent sessions reuse it)
+#-----------------------------------------------------------
+if [ ! -x .venv/bin/streamlit ]; then
+  echo ">>> First run: creating .venv and installing requirements.txt..."
+  python -m venv .venv
+  .venv/bin/pip install --quiet --upgrade pip
+  .venv/bin/pip install --quiet -r requirements.txt
+fi
+
+#-----------------------------------------------------------
+# sbatch/apptainer must be reachable from here: each pipeline
+# agent (agents/*.py) submits its own SLURM job with `sbatch --wait`
+# from *inside* this session's process, same as a Snakemake/Nextflow
+# Slurm executor would.
+#-----------------------------------------------------------
+
+#-----------------------------------------------------------
+# Start Streamlit
+#-----------------------------------------------------------
+.venv/bin/streamlit run streamlit.py \
+  --server.address 0.0.0.0 \
+  --server.port "$port" \
+  --server.headless true \
+  --server.enableCORS false \
+  --server.enableXsrfProtection false \
+  --browser.gatherUsageStats false

@@ -1,0 +1,43 @@
+---
+# Minimal Batch Connect form: this session only hosts the Streamlit dashboard.
+# Pipeline runs launched from the dashboard submit their own separate SLURM
+# jobs (one per agent, via sbatch --wait) -- their resources are fixed in
+# each agent's own SlurmJob spec (see ../config.py), not configured here.
+cluster: "explorer"
+
+attributes:
+  time:
+    widget: "number_field"
+    required: true
+    label: "Time (Hours)"
+    help: "How long to keep this dashboard session open. Pipeline runs launched
+      from it submit their own separate SLURM jobs and keep running to
+      completion even if this session's time limit is reached first."
+    value: "4"
+    min: 1
+    max: 24
+    cacheable: false
+
+  memory:
+    widget: "number_field"
+    required: true
+    label: "Memory (GB)"
+    value: 8
+    min: 4
+    max: 64
+    cacheable: false
+
+  ncpus:
+    widget: "number_field"
+    required: true
+    label: "CPUs"
+    value: 2
+    min: 1
+    max: 8
+    cacheable: false
+
+form:
+  - time
+  - memory
+  - ncpus
+  - bc_email_on_started
