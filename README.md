@@ -1,5 +1,7 @@
 # SelectiSafe
 
+![SelectiSafe architecture](selectisafe/docs/SelectiSafe.png)
+
 An automated hit-generation pipeline for structure-based drug discovery,
 built around five open-source models run as SLURM jobs on the Northeastern
 Explorer HPC cluster, orchestrated by a small multi-agent Python system with
@@ -54,7 +56,7 @@ Two directories, mirroring their layout on the Explorer cluster
 - **[`selectisafe/`](selectisafe/)** -- the source scripts, docs, and
   target-prep code this pipeline builds on:
   - `scripts/` -- the original SLURM job scripts for FlowR and DiffDock
-  - `docs/`
+  - `docs/` -- `SelectiSafe.png`, the architecture diagram at the top of this file
   - `4ZAU/` -- EGFR/osimertinib target preparation (protein/ligand prep,
     pocket definition)
 
